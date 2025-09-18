@@ -145,7 +145,7 @@ function Navbar() {
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Box
                 component="img"
-                src="/assets/logo-perusahaan/Logo Bayan Punca Digital.png"
+                src="/assets/logo-perusahaan/Logo-Bayan-Punca-Digital.png"
                 alt="PT Bayan Punca Digital"
                 sx={{ 
                   height: { xs: 35, sm: 40 },
