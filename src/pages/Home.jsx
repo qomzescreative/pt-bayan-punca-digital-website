@@ -129,7 +129,7 @@ function Home() {
               <AnimatedSection animation="fadeInRight">
                 <Box sx={{ textAlign: 'center' }}>
                   <LazyImage
-                    src="/src/assets/hero-image.svg"
+                    src="/assets/hero-image.svg"
                     alt="Digital Solutions"
                     sx={{
                       width: '100%',
@@ -339,7 +339,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/1 MEC .png"
+                src="/assets/gambar-klien/1 MEC .png"
                 alt="MEC - PT. MATRA ENGINEERING & CONSTRUCTION"
                 sx={{ 
                   maxWidth: '100%', 
@@ -369,7 +369,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/2. PGP (Permata Gunung Putra) .png"
+                src="/assets/gambar-klien/2. PGP (Permata Gunung Putra) .png"
                 alt="PT. PERMATA GUNUNG PUTRA"
                 sx={{ 
                   maxWidth: '100%', 
@@ -399,7 +399,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/3. Mitra Tunas Klien .png"
+                src="/assets/gambar-klien/3. Mitra Tunas Klien .png"
                 alt="PT MITRA TUNAS HARAPAN"
                 sx={{ 
                   maxWidth: '100%', 
@@ -429,7 +429,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/4. Delicia Klien .png"
+                src="/assets/gambar-klien/4. Delicia Klien .png"
                 alt="PT. DELICIA KARYA UTAMA"
                 sx={{ 
                   maxWidth: '100%', 
@@ -460,7 +460,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/1 MEC .png"
+                src="/assets/gambar-klien/1 MEC .png"
                 alt="MEC - PT. MATRA ENGINEERING & CONSTRUCTION"
                 sx={{ 
                   maxWidth: '100%', 
@@ -490,7 +490,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/2. PGP (Permata Gunung Putra) .png"
+                src="/assets/gambar-klien/2. PGP (Permata Gunung Putra) .png"
                 alt="PT. PERMATA GUNUNG PUTRA"
                 sx={{ 
                   maxWidth: '100%', 
@@ -520,7 +520,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/3. Mitra Tunas Klien .png"
+                src="/assets/gambar-klien/3. Mitra Tunas Klien .png"
                 alt="PT MITRA TUNAS HARAPAN"
                 sx={{ 
                   maxWidth: '100%', 
@@ -550,7 +550,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/4. Delicia Klien .png"
+                src="/assets/gambar-klien/4. Delicia Klien .png"
                 alt="PT. DELICIA KARYA UTAMA"
                 sx={{ 
                   maxWidth: '100%', 
@@ -595,7 +595,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/5. PT Sagara .png"
+                src="/assets/gambar-klien/5. PT Sagara .png"
                 alt="PT SAGARA"
                 sx={{ 
                   maxWidth: '100%', 
@@ -625,7 +625,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/6. Karsa Cipta P .png"
+                src="/assets/gambar-klien/6. Karsa Cipta P .png"
                 alt="PT KARSA CIPTA PERSADA"
                 sx={{ 
                   maxWidth: '100%', 
@@ -655,7 +655,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/7. SBN Klien .jpeg"
+                src="/assets/gambar-klien/7. SBN Klien .jpeg"
                 alt="PT SAKA BUANA NUSANTARA"
                 sx={{ 
                   maxWidth: '100%', 
@@ -685,7 +685,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/8. Satria Garuda Banten .png"
+                src="/assets/gambar-klien/8. Satria Garuda Banten .png"
                 alt="PT SATRIA GARUDA BANTEN"
                 sx={{ 
                   maxWidth: '100%', 
@@ -716,7 +716,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/5. PT Sagara .png"
+                src="/assets/gambar-klien/5. PT Sagara .png"
                 alt="PT SAGARA"
                 sx={{ 
                   maxWidth: '100%', 
@@ -746,7 +746,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/6. Karsa Cipta P .png"
+                src="/assets/gambar-klien/6. Karsa Cipta P .png"
                 alt="PT KARSA CIPTA PERSADA"
                 sx={{ 
                   maxWidth: '100%', 
@@ -776,7 +776,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/7. SBN Klien .jpeg"
+                src="/assets/gambar-klien/7. SBN Klien .jpeg"
                 alt="PT SAKA BUANA NUSANTARA"
                 sx={{ 
                   maxWidth: '100%', 
@@ -806,7 +806,7 @@ function Home() {
             }}>
               <Box
                 component="img"
-                src="/src/assets/gambar-klien/8. Satria Garuda Banten .png"
+                src="/assets/gambar-klien/8. Satria Garuda Banten .png"
                 alt="PT SATRIA GARUDA BANTEN"
                 sx={{ 
                   maxWidth: '100%', 
