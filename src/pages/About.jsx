@@ -89,7 +89,7 @@ const About = () => {
           <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
             <Box
               component="img"
-              src="/assets/about/tentang-pt-bpd.png"
+              src="/tentang-pt-bpd.png"
               alt="Tentang PT Bayan Punca Digital"
               sx={{ 
                 width: '100%', 

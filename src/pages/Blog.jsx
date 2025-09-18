@@ -69,7 +69,7 @@ const getBlogPostsFromStorage = () => {
       title: 'Pentingnya Website Profesional untuk Bisnis di Era Digital',
       category: 'Website Development',
       excerpt: 'Pelajari mengapa website profesional menjadi kunci sukses bisnis di era digital dan bagaimana memaksimalkan potensinya.',
-      image: '/assets/blog/website-pro.svg',
+      image: '/blog/website-pro.svg',
       date: '15 Des 2023',
       status: 'published',
     content: `
@@ -111,7 +111,7 @@ const getBlogPostsFromStorage = () => {
     title: 'Strategi SEO Terbaru untuk Meningkatkan Peringkat Website',
     category: 'SEO',
     excerpt: 'Tips dan trik terbaru dalam optimasi mesin pencari untuk meningkatkan visibilitas website Anda di Google.',
-    image: '/assets/blog/seo-strategy.svg',
+    image: '/blog/seo-strategy.svg',
     date: '12 Des 2023',
     content: `
       <h2>Strategi SEO Terbaru untuk Meningkatkan Peringkat Website</h2>
@@ -159,7 +159,7 @@ const getBlogPostsFromStorage = () => {
     title: 'Tren Desain Website 2024: Apa yang Perlu Anda Ketahui',
     category: 'Web Design',
     excerpt: 'Eksplorasi tren desain website terbaru yang akan mendominasi tahun 2024 dan bagaimana menerapkannya.',
-    image: '/assets/blog/design-trends.png',
+    image: '/blog/design-trends.png',
     date: '10 Des 2023',
     content: `
       <h2>Tren Desain Website 2024: Apa yang Perlu Anda Ketahui</h2>
@@ -205,7 +205,7 @@ const getBlogPostsFromStorage = () => {
     title: 'Memaksimalkan Konversi Website dengan UX Design',
     category: 'UX/UI Design',
     excerpt: 'Panduan lengkap tentang bagaimana desain pengalaman pengguna dapat meningkatkan konversi website Anda.',
-    image: '/assets/blog/ux-design.svg',
+    image: '/blog/ux-design.svg',
     date: '8 Des 2023',
     content: `
       <h2>Memaksimalkan Konversi Website dengan UX Design</h2>
@@ -253,7 +253,7 @@ const getBlogPostsFromStorage = () => {
     title: 'Keamanan Website: Praktik Terbaik untuk Bisnis Online',
     category: 'Security',
     excerpt: 'Tips penting untuk mengamankan website bisnis Anda dari ancaman cyber dan menjaga kepercayaan pelanggan.',
-    image: '/assets/blog/security.svg',
+    image: '/blog/security.svg',
     date: '5 Des 2023',
     content: `
       <h2>Keamanan Website: Praktik Terbaik untuk Bisnis Online</h2>
@@ -304,7 +304,7 @@ const getBlogPostsFromStorage = () => {
     title: 'Transformasi Digital: Langkah-langkah Sukses untuk UKM',
     category: 'Digital Transformation',
     excerpt: 'Panduan praktis bagi UKM dalam melakukan transformasi digital untuk meningkatkan efisiensi dan daya saing.',
-    image: '/assets/blog/digital-transform.svg',
+    image: '/blog/digital-transform.svg',
     date: '3 Des 2023',
     content: `
       <h2>Transformasi Digital: Langkah-langkah Sukses untuk UKM</h2>
