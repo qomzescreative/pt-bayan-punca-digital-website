@@ -29,6 +29,9 @@ import LoadingSkeleton from '../components/LoadingSkeleton'
 import AnimatedSection from '../components/AnimatedSection'
 import AdminLogin from '../components/AdminLogin'
 import FileUpload from '../components/FileUpload'
+import SEOManager from '../components/SEOManager'
+import AnalyticsManager from '../components/AnalyticsManager'
+import SocialMediaManager from '../components/SocialMediaManager'
 import { styled } from '@mui/material/styles'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -39,15 +42,67 @@ import ContactMailIcon from '@mui/icons-material/ContactMail'
 import WorkIcon from '@mui/icons-material/Work'
 import FolderIcon from '@mui/icons-material/Folder'
 import CreateIcon from '@mui/icons-material/Create'
+import SearchIcon from '@mui/icons-material/Search'
+import AnalyticsIcon from '@mui/icons-material/Analytics'
+import ShareIcon from '@mui/icons-material/Share'
 
 const AdminContainer = styled(Container)(({ theme }) => ({
   paddingTop: theme.spacing(4),
   paddingBottom: theme.spacing(4),
+  [theme.breakpoints.down('sm')]: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+  },
+  '& .MuiTableContainer-root': {
+    [theme.breakpoints.down('md')]: {
+      '& .MuiTable-root': {
+        minWidth: 'auto',
+      },
+      '& .MuiTableCell-root': {
+        padding: theme.spacing(1),
+        fontSize: '0.75rem',
+      },
+      '& .MuiTableCell-head': {
+        fontWeight: 600,
+      }
+    },
+    [theme.breakpoints.down('sm')]: {
+      overflowX: 'auto',
+      '& .MuiTableCell-root': {
+        padding: theme.spacing(0.5),
+        fontSize: '0.7rem',
+        '&:nth-of-type(n+4)': {
+          display: 'none',
+        }
+      }
+    }
+  },
+  '& .MuiPaper-root': {
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(1.5),
+      '& .MuiTypography-h5': {
+        fontSize: '1.25rem',
+      }
+    }
+  }
 }))
 
 const StatsCard = styled(Card)(({ theme }) => ({
   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   color: 'white',
+  [theme.breakpoints.down('sm')]: {
+    '& .MuiCardContent-root': {
+      padding: theme.spacing(2),
+    },
+    '& .MuiTypography-h4': {
+      fontSize: '1.5rem',
+    },
+    '& .MuiTypography-h6': {
+      fontSize: '1rem',
+    }
+  },
   '& .MuiCardContent-root': {
     padding: theme.spacing(3),
   },
@@ -954,7 +1009,18 @@ function Admin() {
       </Typography>
       
       <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 4 }}>
-        <Box display="flex" gap={2}>
+        <Box 
+          display="flex" 
+          gap={1}
+          sx={{
+            flexWrap: 'wrap',
+            '& .MuiButton-root': {
+              fontSize: { xs: '0.75rem', sm: '0.875rem' },
+              padding: { xs: '6px 8px', sm: '6px 16px' },
+              minWidth: { xs: 'auto', sm: '64px' }
+            }
+          }}
+        >
           <Button
             variant={activeTab === 'dashboard' ? 'contained' : 'text'}
             onClick={() => setActiveTab('dashboard')}
@@ -990,6 +1056,27 @@ function Admin() {
           >
             Blog
           </Button>
+          <Button
+            variant={activeTab === 'seo' ? 'contained' : 'text'}
+            onClick={() => setActiveTab('seo')}
+            startIcon={<SearchIcon />}
+          >
+            SEO
+          </Button>
+          <Button
+            variant={activeTab === 'analytics' ? 'contained' : 'text'}
+            onClick={() => setActiveTab('analytics')}
+            startIcon={<AnalyticsIcon />}
+          >
+            Analytics
+          </Button>
+          <Button
+            variant={activeTab === 'social' ? 'contained' : 'text'}
+            onClick={() => setActiveTab('social')}
+            startIcon={<ShareIcon />}
+          >
+            Social Media
+          </Button>
         </Box>
       </Box>
       
@@ -998,6 +1085,9 @@ function Admin() {
       {activeTab === 'contacts' && renderContacts()}
       {activeTab === 'portfolio' && renderPortfolio()}
       {activeTab === 'blog' && renderBlog()}
+      {activeTab === 'seo' && <SEOManager />}
+      {activeTab === 'analytics' && <AnalyticsManager />}
+      {activeTab === 'social' && <SocialMediaManager />}
       
       {/* Edit Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
