@@ -1,0 +1,19 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Browser Window Frame -->
+  <rect x="10" y="10" width="80" height="80" rx="8" fill="#F5F5F5" stroke="#2B2B2B" stroke-width="2"/>
+  
+  <!-- Browser Controls -->
+  <circle cx="25" cy="25" r="3" fill="#FF6B00"/>
+  <circle cx="35" cy="25" r="3" fill="#2B2B2B"/>
+  <circle cx="45" cy="25" r="3" fill="#2B2B2B"/>
+  
+  <!-- Content Elements -->
+  <rect x="20" y="40" width="30" height="4" rx="2" fill="#FF6B00"/>
+  <rect x="20" y="50" width="60" height="2" rx="1" fill="#2B2B2B"/>
+  <rect x="20" y="55" width="60" height="2" rx="1" fill="#2B2B2B"/>
+  <rect x="20" y="60" width="40" height="2" rx="1" fill="#2B2B2B"/>
+  
+  <!-- Responsive Design Indicator -->
+  <rect x="60" y="40" width="20" height="30" rx="4" fill="none" stroke="#FF6B00" stroke-width="2"/>
+  <rect x="65" y="45" width="10" height="20" rx="2" fill="#FF6B00" fill-opacity="0.2"/>
+</svg>
