@@ -1,9 +1,28 @@
-import { Box, Container, Typography, Grid, TextField, Button, Paper, Alert } from '@mui/material'
+import React, { useState, useRef, useEffect } from 'react'
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  TextField,
+  Button,
+  Paper,
+  Alert,
+  CircularProgress,
+  Snackbar
+} from '@mui/material'
 import { styled } from '@mui/material/styles'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import PhoneIcon from '@mui/icons-material/Phone'
 import EmailIcon from '@mui/icons-material/Email'
-import { useState, useRef, useEffect } from 'react'
+import WhatsAppIcon from '@mui/icons-material/WhatsApp'
+import FacebookIcon from '@mui/icons-material/Facebook'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import TwitterIcon from '@mui/icons-material/Twitter'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import ErrorIcon from '@mui/icons-material/Error'
+import { sendContactEmail } from '../utils/emailService'
 
 const ContactForm = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -44,8 +63,12 @@ function Contact() {
     subject: '',
     message: ''
   })
+  const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
+  const [submitStatus, setSubmitStatus] = useState('') // 'success', 'error', or ''
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const formRef = useRef(null)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -53,15 +76,91 @@ function Contact() {
       ...prev,
       [name]: value
     }))
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }))
+    }
+  }
+
+  const validateForm = () => {
+    const newErrors = {}
+    
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = 'Nama lengkap wajib diisi'
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Nama minimal 2 karakter'
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.name.trim())) {
+      newErrors.name = 'Nama hanya boleh berisi huruf dan spasi'
+    }
+    
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email wajib diisi'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Format email tidak valid'
+    }
+    
+    // Phone validation
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Nomor telepon wajib diisi'
+    } else if (!/^(\+62|62|0)[0-9]{9,13}$/.test(formData.phone.replace(/[\s-]/g, ''))) {
+      newErrors.phone = 'Format nomor telepon tidak valid (contoh: 08123456789)'
+    }
+    
+    // Subject validation
+    if (!formData.subject.trim()) {
+      newErrors.subject = 'Subjek wajib diisi'
+    } else if (formData.subject.trim().length < 5) {
+      newErrors.subject = 'Subjek minimal 5 karakter'
+    }
+    
+    // Message validation
+    if (!formData.message.trim()) {
+      newErrors.message = 'Pesan wajib diisi'
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Pesan minimal 10 karakter'
+    } else if (formData.message.trim().length > 1000) {
+      newErrors.message = 'Pesan maksimal 1000 karakter'
+    }
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    
+    if (!validateForm()) {
+      // Focus on first error field
+      const firstErrorField = Object.keys(errors)[0]
+      if (firstErrorField && formRef.current) {
+        const errorElement = formRef.current.querySelector(`[name="${firstErrorField}"]`)
+        if (errorElement) {
+          errorElement.focus()
+        }
+      }
+      return
+    }
+    
     setIsSubmitting(true)
     setSubmitMessage('')
+    setSubmitStatus('')
     
     try {
-      // Create new contact message
+      // Send email notification using EmailJS
+      await sendContactEmail({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        subject: formData.subject,
+        message: formData.message
+      })
+
+      // Create new contact message for local storage
       const newContact = {
         id: Date.now(),
         name: formData.name,
@@ -82,13 +181,16 @@ function Contact() {
       // Save to localStorage
       localStorage.setItem('adminContacts', JSON.stringify(updatedContacts))
       
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      setSubmitMessage('Pesan berhasil dikirim! Kami akan segera menghubungi Anda.')
+      setSubmitMessage('Pesan berhasil dikirim! Kami akan segera menghubungi Anda melalui email atau telepon.')
+      setSubmitStatus('success')
+      setSnackbarOpen(true)
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
+      setErrors({})
     } catch (error) {
-      setSubmitMessage('Terjadi kesalahan. Silakan coba lagi.')
+      console.error('Error sending email:', error)
+      setSubmitMessage('Terjadi kesalahan saat mengirim pesan. Silakan coba lagi atau hubungi kami langsung.')
+      setSubmitStatus('error')
+      setSnackbarOpen(true)
     } finally {
       setIsSubmitting(false)
     }
@@ -96,14 +198,23 @@ function Contact() {
 
   return (
     <Box sx={{ py: 8, backgroundColor: 'background.default' }}>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" className="responsive-container" sx={{ py: 8 }}>
         <Typography
           variant="h2"
+          component="h1"
+          className="responsive-text-4xl responsive-text-center"
           align="center"
           gutterBottom
-          sx={{ mb: 2, fontWeight: 600 }}
+          sx={{ 
+            mb: 6, 
+            fontWeight: 700,
+            background: 'linear-gradient(135deg, #FF6B00 0%, #FF8F00 100%)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}
         >
-          Kontak
+          Hubungi Kami
         </Typography>
 
         <Typography
@@ -117,15 +228,37 @@ function Contact() {
 
         <Grid container spacing={{ xs: 4, md: 6 }}>
           <Grid item xs={12} md={6}>
-            <ContactForm component="form" onSubmit={handleSubmit}>
-              <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
+            <ContactForm 
+              component="form" 
+              onSubmit={handleSubmit}
+              ref={formRef}
+              role="form"
+              aria-labelledby="contact-form-title"
+              aria-describedby="contact-form-description"
+            >
+              <Typography 
+                id="contact-form-title"
+                variant="h5" 
+                gutterBottom 
+                sx={{ mb: 3 }}
+              >
                 Kirim Pesan
+              </Typography>
+
+              <Typography 
+                id="contact-form-description"
+                variant="body2"
+                sx={{ mb: 3, color: 'text.secondary' }}
+              >
+                Isi formulir di bawah ini untuk menghubungi kami. Semua field wajib diisi.
               </Typography>
 
               {submitMessage && (
                 <Alert 
                   severity={submitMessage.includes('berhasil') ? 'success' : 'error'}
                   sx={{ mb: 3 }}
+                  role="alert"
+                  aria-live="polite"
                 >
                   {submitMessage}
                 </Alert>
@@ -139,6 +272,13 @@ function Contact() {
                 value={formData.name}
                 onChange={handleChange}
                 required
+                error={!!errors.name}
+                helperText={errors.name}
+                aria-describedby={errors.name ? "name-error" : undefined}
+                inputProps={{
+                  'aria-label': 'Nama lengkap Anda',
+                  'aria-required': 'true'
+                }}
               />
 
               <StyledTextField
@@ -150,6 +290,13 @@ function Contact() {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                error={!!errors.email}
+                helperText={errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
+                inputProps={{
+                  'aria-label': 'Alamat email Anda',
+                  'aria-required': 'true'
+                }}
               />
 
               <StyledTextField
@@ -160,6 +307,13 @@ function Contact() {
                 value={formData.phone}
                 onChange={handleChange}
                 required
+                error={!!errors.phone}
+                helperText={errors.phone}
+                aria-describedby={errors.phone ? "phone-error" : undefined}
+                inputProps={{
+                  'aria-label': 'Nomor telepon Anda',
+                  'aria-required': 'true'
+                }}
               />
 
               <StyledTextField
@@ -170,6 +324,13 @@ function Contact() {
                 value={formData.subject}
                 onChange={handleChange}
                 required
+                error={!!errors.subject}
+                helperText={errors.subject}
+                aria-describedby={errors.subject ? "subject-error" : undefined}
+                inputProps={{
+                  'aria-label': 'Subjek pesan Anda',
+                  'aria-required': 'true'
+                }}
               />
 
               <StyledTextField
@@ -182,6 +343,13 @@ function Contact() {
                 value={formData.message}
                 onChange={handleChange}
                 required
+                error={!!errors.message}
+                helperText={errors.message}
+                aria-describedby={errors.message ? "message-error" : undefined}
+                inputProps={{
+                  'aria-label': 'Isi pesan Anda',
+                  'aria-required': 'true'
+                }}
               />
 
               <Button
@@ -191,22 +359,61 @@ function Contact() {
                 size="large"
                 fullWidth
                 disabled={isSubmitting}
+                startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : null}
+                aria-describedby="submit-button-description"
                 sx={{
-                  py: { xs: 1.2, sm: 1.5 },
-                  borderRadius: '8px',
+                  py: { xs: 1.5, sm: 2 },
+                  borderRadius: '12px',
                   fontSize: { xs: '1rem', sm: '1.1rem' },
-                  background: 'linear-gradient(45deg, #FF6B00 30%, #FF8533 90%)',
-                  boxShadow: '0 3px 5px 2px rgba(255, 107, 0, .3)',
-                  transition: 'all 0.3s ease',
+                  fontWeight: 600,
+                  background: 'linear-gradient(135deg, #FF6B00 0%, #FF8533 50%, #FFA366 100%)',
+                  boxShadow: '0 4px 15px rgba(255, 107, 0, 0.3)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: '-100%',
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                    transition: 'left 0.5s',
+                  },
                   '&:hover': {
-                    background: 'linear-gradient(45deg, #CC5500 30%, #FF6B00 90%)',
+                    background: 'linear-gradient(135deg, #E55A00 0%, #FF6B00 50%, #FF8533 100%)',
                     transform: 'translateY(-2px)',
-                    boxShadow: '0 6px 10px 2px rgba(33, 203, 243, .4)'
+                    boxShadow: '0 8px 25px rgba(255, 107, 0, 0.4)',
+                    '&::before': {
+                      left: '100%',
+                    },
+                  },
+                  '&:active': {
+                    transform: 'translateY(0px)',
+                    boxShadow: '0 4px 15px rgba(255, 107, 0, 0.3)',
+                  },
+                  '&:focus': {
+                    outline: '3px solid rgba(255, 107, 0, 0.3)',
+                    outlineOffset: '2px'
+                  },
+                  '&:disabled': {
+                    background: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)',
+                    transform: 'none',
+                    boxShadow: 'none',
                   }
                 }}
               >
-                {isSubmitting ? 'Mengirim...' : 'Kirim Pesan'}
+                {isSubmitting ? 'Mengirim Pesan...' : 'Kirim Pesan'}
               </Button>
+              
+              <Typography 
+                id="submit-button-description"
+                variant="caption"
+                sx={{ mt: 1, color: 'text.secondary', display: 'block' }}
+              >
+                Dengan mengirim pesan ini, Anda menyetujui bahwa kami akan menghubungi Anda terkait pertanyaan Anda.
+              </Typography>
             </ContactForm>
           </Grid>
 
@@ -230,6 +437,30 @@ function Contact() {
                     Jalan Raya Kramatwatu Waringin Kurung, Waringinkurung
                     <br />
                     Sambilawang, Kab Serang, Provinsi – Banten 42453
+                  </Typography>
+                </Box>
+              </ContactInfo>
+
+              <ContactInfo>
+                <WhatsAppIcon sx={{ color: '#25D366' }} />
+                <Box>
+                  <Typography variant="h6" gutterBottom>
+                    WhatsApp
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    component="a"
+                    href="https://wa.me/6287727073796"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      '&:hover': { color: '#25D366' },
+                    }}
+                  >
+                    +62 877-2707-3796
                   </Typography>
                 </Box>
               </ContactInfo>
@@ -290,9 +521,136 @@ function Contact() {
                   Minggu: Tutup
                 </Typography>
               </Box>
+
+              {/* Social Media Section */}
+              <Box sx={{ mt: 6 }}>
+                <Typography variant="h6" gutterBottom>
+                  Ikuti Kami
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                  <Box
+                    component="a"
+                    href="https://facebook.com/bayanpuncadigital"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      backgroundColor: '#1877F2',
+                      color: 'white',
+                      textDecoration: 'none',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 4px 12px rgba(24, 119, 242, 0.3)',
+                      },
+                    }}
+                  >
+                    <FacebookIcon />
+                  </Box>
+                  <Box
+                    component="a"
+                    href="https://instagram.com/bayanpuncadigital"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'linear-gradient(45deg, #F56040, #E1306C, #C13584, #833AB4)',
+                      color: 'white',
+                      textDecoration: 'none',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 4px 12px rgba(225, 48, 108, 0.3)',
+                      },
+                    }}
+                  >
+                    <InstagramIcon />
+                  </Box>
+                  <Box
+                    component="a"
+                    href="https://linkedin.com/company/bayanpuncadigital"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      backgroundColor: '#0A66C2',
+                      color: 'white',
+                      textDecoration: 'none',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 4px 12px rgba(10, 102, 194, 0.3)',
+                      },
+                    }}
+                  >
+                    <LinkedInIcon />
+                  </Box>
+                  <Box
+                    component="a"
+                    href="https://twitter.com/bayanpuncadigital"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      backgroundColor: '#1DA1F2',
+                      color: 'white',
+                      textDecoration: 'none',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 4px 12px rgba(29, 161, 242, 0.3)',
+                      },
+                    }}
+                  >
+                    <TwitterIcon />
+                  </Box>
+                </Box>
+              </Box>
             </Box>
           </Grid>
         </Grid>
+        
+        {/* Success/Error Snackbar */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={() => setSnackbarOpen(false)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={() => setSnackbarOpen(false)}
+            severity={submitStatus}
+            variant="filled"
+            icon={submitStatus === 'success' ? <CheckCircleIcon /> : <ErrorIcon />}
+            sx={{
+              width: '100%',
+              fontSize: '1rem',
+              fontWeight: 500,
+            }}
+          >
+            {submitMessage}
+          </Alert>
+        </Snackbar>
         
         <Box sx={{ 
           mt: 6, 

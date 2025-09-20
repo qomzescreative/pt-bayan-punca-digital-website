@@ -1,0 +1,21 @@
+Contact: mailto:security@bayanpuncadigital.com
+Contact: https://bayanpuncadigital.com/contact
+Expires: 2025-12-31T23:59:59.000Z
+Encryption: https://bayanpuncadigital.com/pgp-key.txt
+Preferred-Languages: id, en
+Canonical: https://bayanpuncadigital.com/.well-known/security.txt
+Policy: https://bayanpuncadigital.com/security-policy
+Hiring: https://bayanpuncadigital.com/careers
+
+# Security Policy
+# 
+# PT Bayan Punca Digital takes security seriously. If you discover a security 
+# vulnerability, please report it to us through the contact methods above.
+#
+# Please include:
+# - Description of the vulnerability
+# - Steps to reproduce
+# - Potential impact
+# - Your contact information
+#
+# We will respond within 48 hours and work with you to resolve the issue.

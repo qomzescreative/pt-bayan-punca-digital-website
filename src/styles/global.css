@@ -1,0 +1,137 @@
+/* Mobile Responsiveness Improvements */
+@media (max-width: 768px) {
+  .responsive-container {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  
+  .responsive-section {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+  
+  .responsive-button {
+    min-height: 48px !important;
+    font-size: 16px !important;
+    padding: 12px 24px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .responsive-text-5xl {
+    font-size: 2.5rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 20px !important;
+  }
+  
+  .responsive-text-4xl {
+    font-size: 2rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 16px !important;
+  }
+  
+  .responsive-text-xl {
+    font-size: 1.2rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 24px !important;
+  }
+  
+  .responsive-text-center {
+    text-align: center !important;
+  }
+  
+  /* Form improvements for mobile */
+  .MuiTextField-root {
+    margin-bottom: 16px !important;
+  }
+  
+  .MuiTextField-root .MuiInputBase-input {
+    font-size: 16px !important;
+    padding: 14px !important;
+  }
+  
+  .MuiTextField-root .MuiInputLabel-root {
+    font-size: 16px !important;
+  }
+  
+  /* Card spacing improvements */
+  .MuiGrid-item {
+    padding-bottom: 16px !important;
+  }
+  
+  /* Navigation improvements */
+  .MuiAppBar-root {
+    padding: 0 16px !important;
+  }
+  
+  /* Footer improvements */
+  .MuiContainer-root {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  
+  .responsive-text-5xl {
+    font-size: 2rem !important;
+  }
+  
+  .responsive-text-4xl {
+    font-size: 1.75rem !important;
+  }
+  
+  .responsive-button {
+    width: 100% !important;
+    max-width: 300px !important;
+    margin: 0 auto 16px auto !important;
+    display: block !important;
+  }
+}
+
+/* Enhanced focus states for accessibility */
+.MuiButton-root:focus-visible,
+.MuiTextField-root .MuiInputBase-root:focus-within {
+  outline: 3px solid rgba(255, 107, 0, 0.5) !important;
+  outline-offset: 2px !important;
+}
+
+/* Improved contrast for better readability */
+.MuiTypography-body1,
+.MuiTypography-body2 {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+.MuiTypography-caption {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Loading states */
+.MuiButton-root:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+/* Smooth transitions */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Touch targets for mobile */
+@media (max-width: 768px) {
+  .MuiIconButton-root {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+  
+  .MuiButton-root {
+    min-height: 44px !important;
+  }
+  
+  .MuiListItem-root {
+    min-height: 48px !important;
+  }
+}

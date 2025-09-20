@@ -1,78 +1,83 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import WhatsAppButton from './components/WhatsAppButton'
+import React, { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { ThemeProvider, CssBaseline, Box } from '@mui/material';
+import theme from './theme/theme';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import LoadingSpinner from './components/LoadingSpinner';
+import ErrorBoundary from './components/ErrorBoundary';
+import WhatsAppButton from './components/WhatsAppButton';
+import AdminFloatingButton from './components/AdminFloatingButton';
+import AccessibilitySkipLink from './components/AccessibilitySkipLink';
+import CookieBanner from './components/CookieBanner';
+import { initializeGA, trackPageView } from './utils/analytics';
 
-import ErrorBoundary from './components/ErrorBoundary'
-import Home from './pages/Home'
-import About from './pages/About'
-import Portfolio from './pages/Portfolio'
-import Blog from './pages/Blog'
-import Contact from './pages/Contact'
-import Admin from './pages/Admin'
+// Lazy load pages for better performance
+const Home = lazy(() => import('./pages/Home'))
+const About = lazy(() => import('./pages/About'))
+const Portfolio = lazy(() => import('./pages/Portfolio'))
+const Blog = lazy(() => import('./pages/Blog'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Admin = lazy(() => import('./pages/Admin'))
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#FF6B00',
-      light: '#FF8533',
-      dark: '#CC5500',
-    },
-    secondary: {
-      main: '#2B2B2B',
-      light: '#404040',
-      dark: '#1A1A1A',
-    },
-  },
-  typography: {
-    fontFamily: '"Poppins", sans-serif',
-    h1: {
-      fontWeight: 700,
-      fontSize: '2.5rem',
-    },
-    h2: {
-      fontWeight: 600,
-      fontSize: '2rem',
-    },
-    h3: {
-      fontWeight: 600,
-      fontSize: '1.75rem',
-    },
-    body1: {
-      fontSize: '1rem',
-      lineHeight: 1.7,
-    },
-  },
-})
+// Analytics tracking component
+const AnalyticsTracker = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Track page views when route changes
+    trackPageView(location.pathname, document.title);
+  }, [location]);
+
+  return null;
+};
 
 function App() {
+  useEffect(() => {
+    // Initialize Google Analytics on app load
+    initializeGA();
+  }, []);
+
   return (
-    <ErrorBoundary>
-      <Router>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <div className="app">
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ErrorBoundary>
+        <Router>
+          <AnalyticsTracker />
+          <AccessibilitySkipLink />
+          <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Navbar />
-            <main>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/tentang-kami" element={<About />} />
-                <Route path="/portfolio" element={<Portfolio />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/kontak" element={<Contact />} />
-                <Route path="/admin" element={<Admin />} />
-              </Routes>
-            </main>
+            <Box 
+              component="main" 
+              id="main-content"
+              sx={{ 
+                flex: 1,
+                pt: { xs: '64px', sm: '70px' },
+                position: 'relative'
+              }}
+              role="main"
+              aria-label="Main content"
+            >
+              <Suspense fallback={<LoadingSpinner />}>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/portfolio" element={<Portfolio />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/admin" element={<Admin />} />
+                </Routes>
+              </Suspense>
+            </Box>
             <Footer />
             <WhatsAppButton />
-
-          </div>
-        </ThemeProvider>
-      </Router>
-    </ErrorBoundary>
-  )
+            <AdminFloatingButton />
+            <CookieBanner />
+          </Box>
+        </Router>
+      </ErrorBoundary>
+    </ThemeProvider>
+  );
 }
 
 export default App

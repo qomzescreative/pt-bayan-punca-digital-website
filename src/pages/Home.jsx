@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import WhatsAppButton from '../components/WhatsAppButton'
 import AnimatedSection from '../components/AnimatedSection'
 import LazyImage from '../components/LazyImage'
+import SEOHead from '../components/SEOHead'
+import { getPageMeta } from '../content/siteSettings'
 
 const scrollAnimation = keyframes`
   0% {
@@ -32,50 +34,96 @@ const HeroSection = styled(Box)(({ theme }) => ({
 
 const ActionButton = styled(Button)(({ theme }) => ({
   marginRight: theme.spacing(2),
-  padding: theme.spacing(1.5, 4),
-  borderRadius: '30px',
-  fontWeight: 600,
+  padding: theme.spacing(1.8, 4.5),
+  borderRadius: '50px',
+  fontWeight: 700,
+  fontSize: '1.1rem',
+  textTransform: 'none',
+  position: 'relative',
+  overflow: 'hidden',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
   [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(1.2, 3),
-    fontSize: '0.9rem',
+    padding: theme.spacing(1.5, 3.5),
+    fontSize: '1rem',
     marginRight: theme.spacing(1.5),
   },
   [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(1, 2.5),
-    fontSize: '0.8rem',
+    padding: theme.spacing(1.2, 3),
+    fontSize: '0.95rem',
     marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(1.5),
     width: '100%',
-    maxWidth: '200px',
+    maxWidth: '280px',
+  },
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: '-100%',
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+    transition: 'left 0.6s',
+  },
+  '&:hover::before': {
+    left: '100%',
   },
   '&.primary': {
-    backgroundColor: theme.palette.primary.main,
+    background: 'linear-gradient(135deg, #FF6B00 0%, #FF8533 50%, #FFA366 100%)',
     color: '#fff',
+    border: '2px solid transparent',
     '&:hover': {
-      backgroundColor: theme.palette.primary.dark,
+      background: 'linear-gradient(135deg, #E55A00 0%, #FF6B00 50%, #FF8533 100%)',
+      transform: 'translateY(-3px)',
+      boxShadow: '0 8px 25px rgba(255, 107, 0, 0.4)',
+    },
+    '&:active': {
+      transform: 'translateY(-1px)',
+      boxShadow: '0 4px 15px rgba(255, 107, 0, 0.3)',
     },
   },
   '&.secondary': {
-    borderColor: theme.palette.primary.main,
-    color: theme.palette.primary.main,
+    background: 'transparent',
+    border: '2px solid #FF6B00',
+    color: '#FF6B00',
     '&:hover': {
-      backgroundColor: 'rgba(255, 107, 0, 0.08)',
+      background: 'linear-gradient(135deg, rgba(255, 107, 0, 0.1) 0%, rgba(255, 133, 51, 0.15) 100%)',
+      borderColor: '#E55A00',
+      color: '#E55A00',
+      transform: 'translateY(-3px)',
+      boxShadow: '0 8px 25px rgba(255, 107, 0, 0.2)',
+    },
+    '&:active': {
+      transform: 'translateY(-1px)',
+      boxShadow: '0 4px 15px rgba(255, 107, 0, 0.15)',
     },
   },
 }))
 
 function Home() {
+  const pageMeta = getPageMeta('home')
+  
   return (
     <Box>
+      <SEOHead 
+        title={pageMeta.title}
+        description={pageMeta.description}
+        keywords={pageMeta.keywords}
+        canonicalUrl={pageMeta.canonicalUrl}
+        ogType={pageMeta.ogType}
+        ogImage={pageMeta.ogImage}
+        ogUrl={pageMeta.ogUrl}
+      />
       <HeroSection>
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" className="responsive-container">
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
               <AnimatedSection animation="fadeInLeft">
                 <Box sx={{ textAlign: 'justify' }}>
                   <Typography
                     variant="h1"
-                    className="responsive-text-5xl"
+                    className="responsive-text-5xl responsive-text-center"
                     sx={{
                       fontWeight: 700,
                       lineHeight: 1.3,
@@ -100,16 +148,18 @@ function Home() {
                 </Typography>
                 <Box sx={{ 
                   display: 'flex', 
-                  gap: 2, 
+                  gap: 2.5, 
                   flexWrap: 'wrap',
                   flexDirection: { xs: 'column', sm: 'row' },
-                  alignItems: { xs: 'center', sm: 'flex-start' }
+                  alignItems: { xs: 'center', sm: 'flex-start' },
+                  mt: 1
                 }}>
                   <ActionButton
                     component={Link}
                     to="/kontak"
                     variant="contained"
                     className="primary responsive-button"
+                    aria-label="Hubungi kami untuk konsultasi gratis"
                   >
                     Hubungi Kami
                   </ActionButton>
@@ -118,6 +168,7 @@ function Home() {
                     to="/tentang-kami#layanan"
                     variant="outlined"
                     className="secondary responsive-button"
+                    aria-label="Jelajahi layanan digital kami"
                   >
                     Jelajahi Layanan
                   </ActionButton>
